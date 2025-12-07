@@ -1,0 +1,81 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Aluraplay\Mvc\Repository;
+
+use Aluraplay\Mvc\Entity\Video;
+use Aluraplay\Mvc\Repository\Interface\InterfaceRepositorio;
+use Exception;
+use PDO;
+
+class RespositorioVideos implements InterfaceRepositorio
+{
+
+    public function __construct(private PDO $pdo) {}
+
+    public function inserir(Video $video): bool
+    {
+        $stmt =  $this->pdo->prepare("INSERT INTO videos (url, title, path_documents) VALUES (?,?,?)");
+        $stmt->bindValue(1, $video->url);
+        $stmt->bindValue(2, $video->titulo);
+        $stmt->bindValue(3, $video->getFilePath());
+        $result = $stmt->execute();
+
+        $video->setId(intval($this->pdo->lastInsertId()));
+        return $result;
+    }
+
+    public function atualizar(Video $video): bool
+    {
+        $stmt =  $this->pdo->prepare("UPDATE videos SET url = :url, title = :title WHERE id = :id");
+        $stmt->bindValue(':url', $video->url);
+        $stmt->bindValue(':title', $video->titulo);
+        $stmt->bindValue(':id', $video->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
+    /**
+     * Summary of buscarTodos
+     * @return Video[]
+     */
+    public function buscarTodos(): array
+    {
+        $stmt =  $this->pdo->query('SELECT * FROM videos');
+        $listaVideos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map($this->hydrateVideo(...), $listaVideos);
+    }
+
+    public function remover(int $id): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM videos WHERE id = ?");
+        $stmt->bindValue(1, $id);
+        return $stmt->execute();
+    }
+
+    public function buscarPorId(int $id): Video
+    {
+        $stmt  = $this->pdo->prepare('SELECT * FROM videos WHERE id = :id');
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        $videoDados = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        if (!$videoDados) {
+            throw new Exception('Erro ao buscar video de id:' . $id);
+        }
+
+        return $this->hydrateVideo($videoDados);
+    }
+
+    private function hydrateVideo(array $videoData): Video
+    {
+
+        $video =  new Video($videoData['url'], $videoData['title']);
+        $video->setId($videoData['id']);
+
+        return $video;
+    }
+}
