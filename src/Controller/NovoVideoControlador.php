@@ -34,6 +34,7 @@ class NovoVideoControlador implements Controller
                 $fileName = basename($_FILES['image']['name']);
                 $uploadPath = __DIR__ . "/../../public/img/uploads/" . $fileName;
                 move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
+                $uploadPath = "/img/uploads/" . $fileName;
                 $video->setFilePath($uploadPath);
             }
 

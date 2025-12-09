@@ -34,9 +34,17 @@ class EditaVideoControlador implements Controller
             $video->setId(intval($id));
 
             if (array_key_exists("image", $_FILES) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-                $uploadPath = __DIR__ . "/../../public/img/uploads";
-                move_uploaded_file($_FILES['tmp_name'], $uploadPath);
-                $video->setFilePath($uploadPath);
+                $fileName = basename($_FILES['image']['name']);
+                $uploadPath = __DIR__ . "/../../public/img/uploads/" . $fileName;
+                move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
+                $uploadPathPublic = "/img/uploads/" . $fileName;
+                $video->setFilePath($uploadPathPublic);
+            }
+
+            $videoSalvo = $this->respositorioVideos->buscarPorId($id);
+
+            if (!is_null($videoSalvo->getFilePath()) && $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
+                $video->setFilePath($videoSalvo->getFilePath());
             }
 
             $result = $this->respositorioVideos->atualizar($video);

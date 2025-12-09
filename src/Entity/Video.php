@@ -48,7 +48,7 @@ class Video
         $this->filePath = $filePath;
     }
 
-    public function getFilePath(): string
+    public function getFilePath(): ?string
     {
         return $this->filePath;
     }

@@ -9,6 +9,7 @@ use Aluraplay\Mvc\Controller\LoginFormController;
 use Aluraplay\Mvc\Controller\LoginValidacaoController;
 use Aluraplay\Mvc\Controller\LogoutController;
 use Aluraplay\Mvc\Controller\NovoVideoControlador;
+use Aluraplay\Mvc\Controller\RemoveCapaController;
 use Aluraplay\Mvc\Controller\RemoveVideoControlador;
 
 return [
@@ -20,5 +21,6 @@ return [
     'GET|/remover-video' => RemoveVideoControlador::class,
     'GET|/login' => LoginFormController::class,
     'POST|/login' => LoginValidacaoController::class,
-    'GET|/logout' => LogoutController::class
+    'GET|/logout' => LogoutController::class,
+    'GET|/remover-capa' => RemoveCapaController::class
 ];

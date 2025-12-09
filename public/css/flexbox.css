@@ -22,8 +22,24 @@
 
 .videos__item {
     flex-grow: 1;
-    height: 303px;
     width: 300px;
+}
+
+.videos__item img {
+    width: 100%;
+    height: 303px;
+    object-fit: cover;
+    display: block;
+}
+
+.videos__item iframe {
+    width: 100%;
+    height: 303px;
+    display: block;
+}
+
+.videos__item a {
+    display: block;
 }
 
 /* grid vídeos */

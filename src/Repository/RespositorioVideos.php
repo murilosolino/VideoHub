@@ -28,9 +28,14 @@ class RespositorioVideos implements InterfaceRepositorio
 
     public function atualizar(Video $video): bool
     {
-        $stmt =  $this->pdo->prepare("UPDATE videos SET url = :url, title = :title WHERE id = :id");
+        $stmt =  $this->pdo->prepare("UPDATE videos SET
+        url = :url, 
+        title = :title,
+        path_documents = :path_documents
+        WHERE id = :id");
         $stmt->bindValue(':url', $video->url);
         $stmt->bindValue(':title', $video->titulo);
+        $stmt->bindValue(':path_documents', $video->getFilePath());
         $stmt->bindValue(':id', $video->id, PDO::PARAM_INT);
         return $stmt->execute();
     }
@@ -48,13 +53,6 @@ class RespositorioVideos implements InterfaceRepositorio
         return array_map($this->hydrateVideo(...), $listaVideos);
     }
 
-    public function remover(int $id): bool
-    {
-        $stmt = $this->pdo->prepare("DELETE FROM videos WHERE id = ?");
-        $stmt->bindValue(1, $id);
-        return $stmt->execute();
-    }
-
     public function buscarPorId(int $id): Video
     {
         $stmt  = $this->pdo->prepare('SELECT * FROM videos WHERE id = :id');
@@ -70,11 +68,27 @@ class RespositorioVideos implements InterfaceRepositorio
         return $this->hydrateVideo($videoDados);
     }
 
+    public function remover(int $id): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM videos WHERE id = ?");
+        $stmt->bindValue(1, $id);
+        return $stmt->execute();
+    }
+
+    public function removerCapa(int $id): bool
+    {
+        $stmt = $this->pdo->prepare("UPDATE videos SET path_documents = null WHERE id = ?");
+        $stmt->bindValue(1, $id);
+        return $stmt->execute();
+    }
+
+
     private function hydrateVideo(array $videoData): Video
     {
 
         $video =  new Video($videoData['url'], $videoData['title']);
         $video->setId($videoData['id']);
+        $video->setFilePath($videoData['path_documents']);
 
         return $video;
     }
