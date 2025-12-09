@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
+use Aluraplay\Mvc\Entity\CheckUploadArquivo;
 use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Exception;
@@ -11,7 +12,10 @@ use Exception;
 class EditaVideoControlador implements Controller
 {
 
-    public function __construct(private RespositorioVideos $respositorioVideos) {}
+    public function __construct(
+        private RespositorioVideos $respositorioVideos,
+        private CheckUploadArquivo $checkUploadArquivo,
+    ) {}
 
     public function processaRequisicao(): void
     {
@@ -33,11 +37,9 @@ class EditaVideoControlador implements Controller
             $video = new Video($url, $titulo);
             $video->setId(intval($id));
 
-            if (array_key_exists("image", $_FILES) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-                $fileName = basename($_FILES['image']['name']);
-                $uploadPath = __DIR__ . "/../../public/img/uploads/" . $fileName;
-                move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
-                $uploadPathPublic = "/img/uploads/" . $fileName;
+            $uploadPathPublic = $this->checkUploadArquivo->moveUploadFile('image');
+
+            if (!is_null($uploadPathPublic)) {
                 $video->setFilePath($uploadPathPublic);
             }
 
