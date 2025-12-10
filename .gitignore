@@ -1,3 +1,4 @@
 /vendor/
 /public/img/uploads/*
 *.sqlite
+!/public/img/uploads/.gitkeep
