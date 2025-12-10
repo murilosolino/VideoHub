@@ -44,6 +44,7 @@ class NovoVideoControlador implements Controller
 
             $result ? header('Location: /?success=1') : throw new Exception('Ocorreu um erro durante a inserção no banco de dados');
         } catch (\Throwable $th) {
+            error_log("Erro ao criar novo vídeo: " . $th->getMessage());
             header('Location: /?success=0');
             exit();
         }

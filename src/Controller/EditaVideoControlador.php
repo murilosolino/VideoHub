@@ -55,6 +55,7 @@ class EditaVideoControlador implements Controller
                 'Ocorreu um erro durante a atualização do registro no banco de dados'
             );
         } catch (\Throwable $th) {
+            error_log("Erro ao editar vídeo: " . $th->getMessage());
             header('Location: /?success=0');
             exit();
         }
