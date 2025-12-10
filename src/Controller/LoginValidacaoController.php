@@ -27,12 +27,15 @@ class LoginValidacaoController implements Controller
             }
 
             $usuario = new Usuario($email, $senha);
-
             $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
 
             if ($usuario->validaLogin($usuarioBanco)) {
-                $_SESSION['logado'] = true;
 
+                if (password_needs_rehash($usuarioBanco->password, PASSWORD_ARGON2ID)) {
+                    $novoHash = password_hash($senha, PASSWORD_ARGON2ID);
+                    $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
+                }
+                $_SESSION['logado'] = true;
                 header('Location: /');
                 return;
             } else {
