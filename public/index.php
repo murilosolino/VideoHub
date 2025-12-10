@@ -25,7 +25,11 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 $key = "$requestMethod|$pathInfo";
 $isLoginRoute = $pathInfo === '/login';
-
+session_set_cookie_params([
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strinct'
+]);
 session_start();
 if (isset($_SESSION['logado'])) {
     $originalInfo = $_SESSION['logado'];
