@@ -25,5 +25,6 @@ class VideosJsonController implements Controller
             ];
         }, $this->respositorioVideos->buscarTodos());
         echo json_encode($listaVideos);
+        header('Content-Type: application/json');
     }
 }
