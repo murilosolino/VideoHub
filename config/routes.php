@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Aluraplay\Mvc\Controller\Api\NovoVideoJsonController;
 use Aluraplay\Mvc\Controller\EditaVideoControlador;
 use Aluraplay\Mvc\Controller\FormularioControlador;
 use Aluraplay\Mvc\Controller\ListaVideosControlador;
@@ -11,6 +12,7 @@ use Aluraplay\Mvc\Controller\LogoutController;
 use Aluraplay\Mvc\Controller\NovoVideoControlador;
 use Aluraplay\Mvc\Controller\RemoveCapaController;
 use Aluraplay\Mvc\Controller\RemoveVideoControlador;
+use Aluraplay\Mvc\Controller\Api\VideosJsonController;
 
 return [
     'GET|/' => ListaVideosControlador::class,
@@ -22,5 +24,7 @@ return [
     'GET|/login' => LoginFormController::class,
     'POST|/login' => LoginValidacaoController::class,
     'GET|/logout' => LogoutController::class,
-    'GET|/remover-capa' => RemoveCapaController::class
+    'GET|/remover-capa' => RemoveCapaController::class,
+    'GET|/videos-json' => VideosJsonController::class,
+    'POST|/videos-json' => NovoVideoJsonController::class
 ];
