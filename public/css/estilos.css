@@ -115,6 +115,41 @@ body>header {
 }
 
 .formulario_titulo.erro {
-    color: red;
+    color: #fff;
+    background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
+    border-radius: 8px;
+    padding: 12px 20px 12px 48px;
     margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(255, 88, 88, 0.08);
+    position: relative;
+    display: inline-block;
+    border-left: 6px solid #ff5858;
+    animation: erroFadeIn 0.5s;
+}
+
+.formulario_titulo.erro::before {
+    content: '\26A0';
+    /* Unicode Warning icon */
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3em;
+    color: #fffbe6;
+    opacity: 0.85;
+}
+
+@keyframes erroFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
