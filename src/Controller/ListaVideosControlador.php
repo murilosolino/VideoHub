@@ -6,7 +6,7 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 
-class ListaVideosControlador implements Controller
+class ListaVideosControlador extends ControllerWithHtml
 {
 
 
@@ -17,6 +17,6 @@ class ListaVideosControlador implements Controller
 
         $listaVideos = $this->respositorioVideos->buscarTodos();
 
-        require_once __DIR__ . '/../../views/lista-videos-html.php';
+        echo $this->renderTemplate('lista-videos-html', ['listaVideos' => $listaVideos]);
     }
 }

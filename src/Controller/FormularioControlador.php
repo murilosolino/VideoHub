@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
-use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
-use InvalidArgumentException;
 
-class FormularioControlador implements Controller
+class FormularioControlador extends ControllerWithHtml
 {
 
     public function __construct(private RespositorioVideos $respositorioVideos) {}
@@ -24,6 +22,6 @@ class FormularioControlador implements Controller
             $video = $this->respositorioVideos->buscarPorId($id);
         }
 
-        require_once __DIR__ . '/../../views/formulario-html.php';
+        echo $this->renderTemplate('formulario-html', ['video' => $video]);
     }
 }

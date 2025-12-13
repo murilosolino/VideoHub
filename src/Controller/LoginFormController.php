@@ -6,7 +6,7 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Controller\Controller;
 
-class LoginFormController implements Controller
+class LoginFormController extends ControllerWithHtml
 {
 
     public function processaRequisicao(): void
@@ -15,6 +15,7 @@ class LoginFormController implements Controller
             header('Location: /');
             return;
         }
-        require_once __DIR__ . "/../../views/login-form.php";
+
+        echo $this->renderTemplate('login-form');
     }
 }
