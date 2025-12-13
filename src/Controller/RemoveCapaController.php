@@ -14,8 +14,16 @@ class RemoveCapaController implements Controller
     public function processaRequisicao(): void
     {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($id === false || $id === null) {
+            $_SESSION['error_message'] = 'ID de vídeo inválido.';
+            header('Location: /');
+            return;
+        }
         $result = $this->respositorio->removerCapa($id);
 
-        $result ? header('Location: /?success=1') : header("Location: /success=0");
+        if (!$result) {
+            $_SESSION['error_message'] = 'Ocorreu um erro ao remover a capa do vídeo. Tente novamente mais tarde';
+        }
+        header('Location: /');
     }
 }

@@ -16,5 +16,5 @@ interface InterfaceRepositorio
 
     public function remover(int $id): bool;
 
-    public function buscarPorId(int $id): Video;
+    public function buscarPorId(int $id): ?Video;
 }

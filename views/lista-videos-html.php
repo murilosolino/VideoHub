@@ -31,16 +31,4 @@ require_once __DIR__ . '/inicio-html.php';
     <?php endforeach; ?>
 </ul>
 
-<?php if (isset($_GET['success'])): ?>
-    <?php if ($_GET['success'] == 1): ?>
-        <script>
-            alert('Operação realizada com sucesso!');
-        </script>
-    <?php else: ?>
-        <script>
-            alert('Ocorreu um erro durante a Operação!');
-        </script>
-    <?php endif; ?>
-<?php endif; ?>
-
 <?php require_once __DIR__ . '/fim-html.php';

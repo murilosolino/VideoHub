@@ -6,7 +6,6 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Entity\Usuario;
 use Aluraplay\Mvc\Repository\RepositorioUsuario;
-use Exception;
 
 class LoginValidacaoController implements Controller
 {
@@ -17,33 +16,35 @@ class LoginValidacaoController implements Controller
 
     public function processaRequisicao(): void
     {
-        try {
-            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-            $senha = filter_input(INPUT_POST, 'password');
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $senha = filter_input(INPUT_POST, 'password');
 
-            if (empty($email) || empty($senha)) {
-                header('Location: /login?success=0');
-                exit();
+        if ($email === false || $email === null || $senha === false || $senha === null) {
+            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            header('Location: /login');
+            return;
+        }
+        $usuario = new Usuario($email, $senha);
+        $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
+
+        if (is_null($usuarioBanco)) {
+            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            header('Location: /login');
+            return;
+        }
+
+        if ($usuario->validaLogin($usuarioBanco)) {
+
+            if (password_needs_rehash($usuarioBanco->password, PASSWORD_ARGON2ID)) {
+                $novoHash = password_hash($senha, PASSWORD_ARGON2ID);
+                $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
             }
-
-            $usuario = new Usuario($email, $senha);
-            $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
-
-            if ($usuario->validaLogin($usuarioBanco)) {
-
-                if (password_needs_rehash($usuarioBanco->password, PASSWORD_ARGON2ID)) {
-                    $novoHash = password_hash($senha, PASSWORD_ARGON2ID);
-                    $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
-                }
-                $_SESSION['logado'] = true;
-                header('Location: /');
-                return;
-            } else {
-                throw new Exception();
-            }
-        } catch (\Throwable $th) {
-            header('Location: /login?success=0');
-            exit();
+            $_SESSION['logado'] = true;
+            header('Location: /');
+            return;
+        } else {
+            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            header('Location: /login');
         }
     }
 }

@@ -13,7 +13,7 @@ class RepositorioUsuario
 {
     public function __construct(private PDO $pdo) {}
 
-    public function buscarPorEmail(Usuario $usuario): Usuario
+    public function buscarPorEmail(Usuario $usuario): ?Usuario
     {
 
         $sql = "SELECT * FROM usuarios WHERE email = ?";
@@ -24,7 +24,7 @@ class RepositorioUsuario
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (empty($result)) {
-            throw new InvalidArgumentException();
+            return null;
         }
 
         return $this->hydrateUsuario($result);

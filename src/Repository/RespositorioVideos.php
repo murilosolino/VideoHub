@@ -53,7 +53,7 @@ class RespositorioVideos implements InterfaceRepositorio
         return array_map($this->hydrateVideo(...), $listaVideos);
     }
 
-    public function buscarPorId(int $id): Video
+    public function buscarPorId(int $id): ?Video
     {
         $stmt  = $this->pdo->prepare('SELECT * FROM videos WHERE id = :id');
         $stmt->bindValue(1, $id);
@@ -62,7 +62,7 @@ class RespositorioVideos implements InterfaceRepositorio
 
 
         if (!$videoDados) {
-            throw new Exception('Erro ao buscar video de id:' . $id);
+            return null;
         }
 
         return $this->hydrateVideo($videoDados);

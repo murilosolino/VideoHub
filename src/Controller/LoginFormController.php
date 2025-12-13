@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
-use Aluraplay\Mvc\Controller\Controller;
-
 class LoginFormController extends ControllerWithHtml
 {
 

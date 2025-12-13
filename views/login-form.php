@@ -22,16 +22,4 @@
 
 </main>
 
-<?php if (isset($_GET['success'])): ?>
-    <?php if ($_GET['success'] == 1): ?>
-        <script>
-            alert('Operação realizada com sucesso!');
-        </script>
-    <?php else: ?>
-        <script>
-            alert('Email ou senha inválidos. Por favor verifique os seus dados.');
-        </script>
-    <?php endif; ?>
-<?php endif; ?>
-
 <?php require_once __DIR__ . "/fim-html.php" ?>
