@@ -6,11 +6,12 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Entity\CheckUploadArquivo;
 use Aluraplay\Mvc\Entity\Video;
+use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 
 class NovoVideoControlador implements Controller
 {
-
+    use FlashMessageTrait;
     public function __construct(
         private RespositorioVideos $respositorioVideos,
         private CheckUploadArquivo $checkUploadArquivo,
@@ -27,7 +28,7 @@ class NovoVideoControlador implements Controller
             $url === false || $url === null || !preg_match('/^https?:\/\/[^\s]+$/', $url) ||
             empty(trim($titulo))
         ) {
-            $_SESSION['error_message'] = 'Dados para cadastro de vídeo inválidos';
+            $this->addFlashErrorMessage('Dados para cadastro de vídeo inválidos');
             header('Location: /novo-video');
             return;
         }
@@ -42,7 +43,7 @@ class NovoVideoControlador implements Controller
         $result = $this->respositorioVideos->inserir($video);
 
         if (!$result) {
-            $_SESSION['error_message'] = 'Ocorreu um erro ao salvar o vídeo. Tente novamente mais tarde';
+            $this->addFlashErrorMessage('Ocorreu um erro ao salvar o vídeo. Tente novamente mais tarde');
             header('Location: /novo-video');
             return;
         }

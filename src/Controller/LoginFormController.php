@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
-class LoginFormController extends ControllerWithHtml
+use Aluraplay\Mvc\Helper\RenderHtmlTrait;
+
+class LoginFormController implements Controller
 {
+    use RenderHtmlTrait;
 
     public function processaRequisicao(): void
     {

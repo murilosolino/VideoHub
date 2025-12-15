@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Controller;
+namespace Aluraplay\Mvc\Helper;
 
-abstract class ControllerWithHtml implements Controller
+trait RenderHtmlTrait
 {
 
     private const TEMPLATE_PATH = __DIR__ . '/../../views/';

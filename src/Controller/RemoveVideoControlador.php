@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
+use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 
 class RemoveVideoControlador implements Controller
 {
+    use FlashMessageTrait;
 
     public function __construct(private RespositorioVideos $respositorioVideos) {}
 
@@ -18,7 +20,7 @@ class RemoveVideoControlador implements Controller
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         if ($id === false || $id === null || $id < 1) {
-            $_SESSION['error_message'] = "Id de vídeo inválido, impossível de excluir";
+            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir");
             header('Location: /');
             return;
         }
@@ -26,7 +28,7 @@ class RemoveVideoControlador implements Controller
         $video = $this->respositorioVideos->buscarPorId($id);
 
         if (is_null($video)) {
-            $_SESSION['error_message'] = "Id de vídeo inválido, impossível de excluir";
+            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir");
             header('Location: /');
             return;
         }
@@ -34,7 +36,7 @@ class RemoveVideoControlador implements Controller
         $result = $this->respositorioVideos->remover($video->id);
 
         if (!$result) {
-            $_SESSION['error_message'] = "Ocorreu um erro durante a exclusão do registro no banco de dados";
+            $this->addFlashErrorMessage("Ocorreu um erro durante a exclusão do registro no banco de dados");
         }
 
         header('Location: /');

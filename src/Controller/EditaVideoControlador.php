@@ -6,12 +6,13 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Entity\CheckUploadArquivo;
 use Aluraplay\Mvc\Entity\Video;
+use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Exception;
 
 class EditaVideoControlador implements Controller
 {
-
+    use FlashMessageTrait;
     public function __construct(
         private RespositorioVideos $respositorioVideos,
         private CheckUploadArquivo $checkUploadArquivo,
@@ -29,7 +30,7 @@ class EditaVideoControlador implements Controller
             empty(trim($titulo)) ||
             $id === false || $id === null
         ) {
-            $_SESSION['error_message'] = 'Dados para edição do vídeo inválidos';
+            $this->addFlashErrorMessage('Dados para edição do vídeo inválidos');
             header('Location: /editar-video?id=' . (is_int($id) ? $id : ''));
             return;
         }
@@ -46,7 +47,7 @@ class EditaVideoControlador implements Controller
         $videoSalvo = $this->respositorioVideos->buscarPorId($id);
 
         if (is_null($videoSalvo)) {
-            $_SESSION['error_message'] = 'Vídeo não encontrado para edição';
+            $this->addFlashErrorMessage('Vídeo não encontrado para edição');
             header('Location: /editar-video?id=' . $id);
             return;
         }
@@ -57,7 +58,7 @@ class EditaVideoControlador implements Controller
         $result = $this->respositorioVideos->atualizar($video);
 
         if (!$result) {
-            $_SESSION['error_message'] = 'Ocorreu um erro ao salvar as edições do vídeo. Tente novamente mais tarde';
+            $this->addFlashErrorMessage('Ocorreu um erro ao salvar as edições do vídeo. Tente novamente mais tarde');
         }
         header('Location: /');
     }

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Entity\Usuario;
+use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RepositorioUsuario;
 
 class LoginValidacaoController implements Controller
 {
-
+    use FlashMessageTrait;
     public function __construct(
         private RepositorioUsuario $repositorioUsuario,
     ) {}
@@ -20,7 +21,7 @@ class LoginValidacaoController implements Controller
         $senha = filter_input(INPUT_POST, 'password');
 
         if ($email === false || $email === null || $senha === false || $senha === null) {
-            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
             header('Location: /login');
             return;
         }
@@ -28,7 +29,7 @@ class LoginValidacaoController implements Controller
         $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
 
         if (is_null($usuarioBanco)) {
-            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
             header('Location: /login');
             return;
         }
@@ -43,7 +44,7 @@ class LoginValidacaoController implements Controller
             header('Location: /');
             return;
         } else {
-            $_SESSION['error_message'] = 'E-mail ou senha inválidos. Verifique suas credenciais';
+            $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
             header('Location: /login');
         }
     }
