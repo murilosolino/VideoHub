@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Repository;
+namespace VideoHub\Mvc\Repository;
 
-use Aluraplay\Mvc\Entity\Video;
-use Aluraplay\Mvc\Repository\Interface\InterfaceRepositorio;
+use VideoHub\Mvc\Entity\Video;
+use VideoHub\Mvc\Repository\Interface\InterfaceRepositorio;
 use PDO;
 
 class RespositorioVideos implements InterfaceRepositorio

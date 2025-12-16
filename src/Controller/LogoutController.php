@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Controller;
+namespace VideoHub\Mvc\Controller;
 
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;

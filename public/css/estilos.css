@@ -1,17 +1,17 @@
 *,
 *::before,
 *::after {
-    --azul-escuro: #154580;
-    --azul-medio: #3970BE;
-    --azul-claro: #E5F1FF;
-    --cinza-texto: #444444;
+    --roxo-escuro: #5a1080;
+    --roxo-medio: #7c3aed;
+    --roxo-claro: #d3acfd;
+    --cinza-texto: #2e2e2e;
     --cinza-claro: #ECECEC;
     box-sizing: border-box;
 }
 
 body {
     font-family: Roboto, Arial, Helvetica, sans-serif;
-    background-color: var(--azul-claro);
+    background-color: var(--roxo-claro);
     position: relative;
     width: 100%;
     height: 100vh;
@@ -41,8 +41,20 @@ body>header {
 .logo {
     background-image: url(../img/cabecalho/Logo.png);
     background-repeat: no-repeat;
-    padding: 15px 65px;
+    background-size: contain;
+    background-position: left center;
+    width: 220px;
+    height: 56px;
+    display: inline-block;
     cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 160px;
+        height: 44px;
+        background-position: left center;
+    }
 }
 
 
@@ -58,7 +70,7 @@ body>header {
     margin: 0 20px;
     padding: 5px 10px;
     border-radius: 10%;
-    background-color: var(--azul-escuro);
+    background-color: var(--roxo-escuro);
 
 }
 
@@ -80,7 +92,7 @@ body>header {
 }
 
 .mensagem__titulo {
-    color: var(--azul-medio);
+    color: var(--roxo-medio);
     font-weight: bold;
     font-size: 21px;
 }
@@ -92,7 +104,7 @@ body>header {
     font-size: 16px;
     padding: 3px 8px;
     border: 1px solid rgb(211, 211, 211);
-    color: var(--azul-escuro);
+    color: var(--roxo-escuro);
 }
 
 .pesquisar__botao {
@@ -116,17 +128,17 @@ body>header {
 
 .formulario_titulo.erro {
     color: #fff;
-    background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
+    background: linear-gradient(90deg, #c41e3a 0%, #a91b5f 100%);
     border-radius: 8px;
     padding: 12px 20px 12px 48px;
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-weight: 500;
     font-size: 1.1rem;
-    box-shadow: 0 2px 8px rgba(255, 88, 88, 0.08);
+    box-shadow: 0 2px 8px rgba(196, 30, 58, 0.15);
     position: relative;
     display: inline-block;
-    border-left: 6px solid #ff5858;
+    border-left: 6px solid #c41e3a;
     animation: erroFadeIn 0.5s;
 }
 

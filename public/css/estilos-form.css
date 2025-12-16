@@ -20,7 +20,7 @@
 }
 
 .formulario__titulo {
-    color: var(--azul-medio);
+    color: var(--roxo-medio);
     font-weight: bold;
     font-size: 21px;
 }
@@ -37,12 +37,12 @@
     line-height: 1.5;
     padding: 0 0 .1em 1em;
     font-weight: 700;
-    color: var(--azul-medio);
+    color: var(--roxo-medio);
 }
 
 .formulario__botao {
     padding: 1em 3em;
     margin: 2em 0;
     border-radius: 24px;
-    background-color: var(--azul-escuro);
+    background-color: var(--roxo-escuro);
 }

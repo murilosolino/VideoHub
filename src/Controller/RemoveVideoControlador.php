@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Controller;
+namespace VideoHub\Mvc\Controller;
 
-use Aluraplay\Mvc\Helper\FlashMessageTrait;
-use Aluraplay\Mvc\Repository\RespositorioVideos;
+use VideoHub\Mvc\Helper\FlashMessageTrait;
+use VideoHub\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Controller\Api;
+namespace VideoHub\Mvc\Controller\Api;
 
-use Aluraplay\Mvc\Controller\Controller;
-use Aluraplay\Mvc\Entity\Video;
-use Aluraplay\Mvc\Repository\RespositorioVideos;
+use VideoHub\Mvc\Controller\Controller;
+use VideoHub\Mvc\Entity\Video;
+use VideoHub\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

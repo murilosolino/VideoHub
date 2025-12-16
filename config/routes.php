@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-use Aluraplay\Mvc\Controller\Api\NovoVideoJsonController;
-use Aluraplay\Mvc\Controller\EditaVideoControlador;
-use Aluraplay\Mvc\Controller\FormularioControlador;
-use Aluraplay\Mvc\Controller\ListaVideosControlador;
-use Aluraplay\Mvc\Controller\LoginFormController;
-use Aluraplay\Mvc\Controller\LoginValidacaoController;
-use Aluraplay\Mvc\Controller\LogoutController;
-use Aluraplay\Mvc\Controller\NovoVideoControlador;
-use Aluraplay\Mvc\Controller\RemoveCapaController;
-use Aluraplay\Mvc\Controller\RemoveVideoControlador;
-use Aluraplay\Mvc\Controller\Api\VideosJsonController;
+use VideoHub\Mvc\Controller\Api\NovoVideoJsonController;
+use VideoHub\Mvc\Controller\EditaVideoControlador;
+use VideoHub\Mvc\Controller\FormularioControlador;
+use VideoHub\Mvc\Controller\ListaVideosControlador;
+use VideoHub\Mvc\Controller\LoginFormController;
+use VideoHub\Mvc\Controller\LoginValidacaoController;
+use VideoHub\Mvc\Controller\LogoutController;
+use VideoHub\Mvc\Controller\NovoVideoControlador;
+use VideoHub\Mvc\Controller\RemoveCapaController;
+use VideoHub\Mvc\Controller\RemoveVideoControlador;
+use VideoHub\Mvc\Controller\Api\VideosJsonController;
 
 return [
     'GET|/' => ListaVideosControlador::class,

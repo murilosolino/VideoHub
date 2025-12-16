@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Controller;
+namespace VideoHub\Mvc\Controller;
 
-use Aluraplay\Mvc\Entity\CheckUploadArquivo;
-use Aluraplay\Mvc\Entity\Video;
-use Aluraplay\Mvc\Helper\FlashMessageTrait;
-use Aluraplay\Mvc\Repository\RespositorioVideos;
+use VideoHub\Mvc\Entity\CheckUploadArquivo;
+use VideoHub\Mvc\Entity\Video;
+use VideoHub\Mvc\Helper\FlashMessageTrait;
+use VideoHub\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -15,7 +15,6 @@
                         allowfullscreen></iframe>
                 <?php endif; ?>
                 <div class="descricao-video">
-                    <img src="./img/logo.png" alt="logo canal alura">
                     <h3><?= $video->titulo ?></h3>
                     <div class="acoes-video">
                         <a href="/editar-video?id=<?= $video->id ?>">Editar</a>

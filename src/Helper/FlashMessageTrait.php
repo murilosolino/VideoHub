@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Helper;
+namespace VideoHub\Mvc\Helper;
 
 trait FlashMessageTrait
 {

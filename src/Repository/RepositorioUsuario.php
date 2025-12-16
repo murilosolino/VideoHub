@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Repository;
+namespace VideoHub\Mvc\Repository;
 
-use Aluraplay\Mvc\Entity\Usuario;
-use Aluraplay\Mvc\Repository\Interface\InterfaceRepositorio;
+use VideoHub\Mvc\Entity\Usuario;
+use VideoHub\Mvc\Repository\Interface\InterfaceRepositorio;
 use InvalidArgumentException;
 use PDO;
 

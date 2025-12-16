@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "Aluraplay\\Mvc\\": "src/"
+            "VideoHub\\Mvc\\": "src/"
         }
     },
     "require": {

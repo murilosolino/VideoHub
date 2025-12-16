@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Repository\Interface;
+namespace VideoHub\Mvc\Repository\Interface;
 
-use Aluraplay\Mvc\Entity\Video;
+use VideoHub\Mvc\Entity\Video;
 
 interface InterfaceRepositorio
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Aluraplay\Mvc\Entity;
+namespace VideoHub\Mvc\Entity;
 
 class CheckUploadArquivo
 {
