@@ -7,6 +7,9 @@ namespace Aluraplay\Mvc\Controller\Api;
 use Aluraplay\Mvc\Controller\Controller;
 use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class VideosJsonController implements Controller
 {
@@ -15,7 +18,7 @@ class VideosJsonController implements Controller
         private RespositorioVideos $respositorioVideos
     ) {}
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
     {
         $listaVideos =  array_map(function (Video $video): array {
             return [
@@ -24,7 +27,6 @@ class VideosJsonController implements Controller
                 "file_path" => $video->getFilePath()
             ];
         }, $this->respositorioVideos->buscarTodos());
-        echo json_encode($listaVideos);
-        header('Content-Type: application/json');
+        return new Response(200, ['Content-Type: application/json'], json_encode($listaVideos));
     }
 }

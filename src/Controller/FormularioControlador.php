@@ -6,16 +6,19 @@ namespace Aluraplay\Mvc\Controller;
 
 use Aluraplay\Mvc\Helper\RenderHtmlTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class FormularioControlador implements Controller
 {
     use RenderHtmlTrait;
     public function __construct(private RespositorioVideos $respositorioVideos) {}
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
     {
-
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $params = $request->getQueryParams();
+        $id = filter_var($params['id'], FILTER_VALIDATE_INT);
 
         $video = null;
 
@@ -23,6 +26,6 @@ class FormularioControlador implements Controller
             $video = $this->respositorioVideos->buscarPorId($id);
         }
 
-        echo $this->renderTemplate('formulario-html', ['video' => $video]);
+        return new Response(200, [], $this->renderTemplate('formulario-html', ['video' => $video]));
     }
 }

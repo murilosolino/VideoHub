@@ -9,6 +9,9 @@ use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Exception;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class EditaVideoControlador implements Controller
 {
@@ -18,12 +21,14 @@ class EditaVideoControlador implements Controller
         private CheckUploadArquivo $checkUploadArquivo,
     ) {}
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
     {
+        $parsedBody = $request->getParsedBody();
+        $params = $request->getQueryParams();
 
-        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
-        $titulo = filter_input(INPUT_POST, 'titulo');
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $url = filter_var($parsedBody['url'], FILTER_VALIDATE_URL);
+        $titulo = filter_var($parsedBody['titulo']);
+        $id = filter_var($params['id'], FILTER_VALIDATE_INT);
 
         if (
             $url === false || $url === null || !preg_match('/^https?:\/\/[^\s]+$/', $url) ||
@@ -31,8 +36,7 @@ class EditaVideoControlador implements Controller
             $id === false || $id === null
         ) {
             $this->addFlashErrorMessage('Dados para edição do vídeo inválidos');
-            header('Location: /editar-video?id=' . (is_int($id) ? $id : ''));
-            return;
+            return new Response(302, ['Location' => '/editar-video?id=' . (is_int($id) ? $id : '')]);
         }
 
         $video = new Video($url, $titulo);
@@ -48,8 +52,7 @@ class EditaVideoControlador implements Controller
 
         if (is_null($videoSalvo)) {
             $this->addFlashErrorMessage('Vídeo não encontrado para edição');
-            header('Location: /editar-video?id=' . $id);
-            return;
+            return new Response(302, ['Location' => '/']);
         }
         if (!is_null($videoSalvo->getFilePath()) && $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
             $video->setFilePath($videoSalvo->getFilePath());
@@ -60,6 +63,6 @@ class EditaVideoControlador implements Controller
         if (!$result) {
             $this->addFlashErrorMessage('Ocorreu um erro ao salvar as edições do vídeo. Tente novamente mais tarde');
         }
-        header('Location: /');
+        return new Response(302, ['Location' => '/']);
     }
 }

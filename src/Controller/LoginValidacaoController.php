@@ -7,6 +7,9 @@ namespace Aluraplay\Mvc\Controller;
 use Aluraplay\Mvc\Entity\Usuario;
 use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RepositorioUsuario;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class LoginValidacaoController implements Controller
 {
@@ -15,23 +18,22 @@ class LoginValidacaoController implements Controller
         private RepositorioUsuario $repositorioUsuario,
     ) {}
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
     {
-        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-        $senha = filter_input(INPUT_POST, 'password');
+        $parsedBody = $request->getParsedBody();
+        $email = filter_var($parsedBody['email'], FILTER_VALIDATE_EMAIL);
+        $senha = filter_var($parsedBody['password']);
 
         if ($email === false || $email === null || $senha === false || $senha === null) {
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
-            header('Location: /login');
-            return;
+            return new Response(302, ['Location' => '/login']);
         }
         $usuario = new Usuario($email, $senha);
         $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
 
         if (is_null($usuarioBanco)) {
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
-            header('Location: /login');
-            return;
+            return new Response(302, ['Location' => '/login']);
         }
 
         if ($usuario->validaLogin($usuarioBanco)) {
@@ -41,11 +43,10 @@ class LoginValidacaoController implements Controller
                 $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
             }
             $_SESSION['logado'] = true;
-            header('Location: /');
-            return;
+            return new Response(302, ['Location' => '/']);
         } else {
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
-            header('Location: /login');
+            return new Response(302, ['Location' => '/login']);
         }
     }
 }

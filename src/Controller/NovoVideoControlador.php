@@ -8,6 +8,9 @@ use Aluraplay\Mvc\Entity\CheckUploadArquivo;
 use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Helper\FlashMessageTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class NovoVideoControlador implements Controller
 {
@@ -17,20 +20,19 @@ class NovoVideoControlador implements Controller
         private CheckUploadArquivo $checkUploadArquivo,
     ) {}
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
     {
 
-
-        $url = filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL);
-        $titulo = filter_input(INPUT_POST, 'titulo');
+        $parsedBody =  $request->getParsedBody();
+        $url = filter_var($parsedBody['url'], FILTER_VALIDATE_URL);
+        $titulo = filter_var($parsedBody['titulo'],);
 
         if (
             $url === false || $url === null || !preg_match('/^https?:\/\/[^\s]+$/', $url) ||
             empty(trim($titulo))
         ) {
             $this->addFlashErrorMessage('Dados para cadastro de vídeo inválidos');
-            header('Location: /novo-video');
-            return;
+            return new Response(302, ['Location' => '/novo-video']);
         }
 
         $video = new Video($url, $titulo);
@@ -44,9 +46,8 @@ class NovoVideoControlador implements Controller
 
         if (!$result) {
             $this->addFlashErrorMessage('Ocorreu um erro ao salvar o vídeo. Tente novamente mais tarde');
-            header('Location: /novo-video');
-            return;
+            return new Response(302, ['Location' => '/novo-video']);
         }
-        header('Location: /');
+        return new Response(302, ['Location' => '/']);
     }
 }
