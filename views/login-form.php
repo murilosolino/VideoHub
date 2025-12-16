@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . "/inicio-html.php" ?>
+<?php $this->layout('layout'); ?>
 
 <main class="container">
 
@@ -21,5 +21,3 @@
     </form>
 
 </main>
-
-<?php require_once __DIR__ . "/fim-html.php" ?>

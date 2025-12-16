@@ -33,3 +33,7 @@
         <h2 class="formulario_titulo erro"> <?= htmlspecialchars($_SESSION['error_message'], ENT_QUOTES, 'UTF-8') ?></h2>
         <?php unset($_SESSION['error_message']) ?>
     <?php endif; ?>
+    <?= $this->section('content'); ?>
+</body>
+
+</html>

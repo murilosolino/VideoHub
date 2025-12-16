@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Aluraplay\Mvc\Controller;
 
-use Aluraplay\Mvc\Helper\RenderHtmlTrait;
 use Aluraplay\Mvc\Repository\RespositorioVideos;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,13 +13,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class FormularioControlador implements RequestHandlerInterface
 {
-    use RenderHtmlTrait;
-    public function __construct(private RespositorioVideos $respositorioVideos) {}
+    public function __construct(
+        private RespositorioVideos $respositorioVideos,
+        private Engine $template,
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
-        $id = filter_var($params['id'], FILTER_VALIDATE_INT);
+        $id = filter_var($params['id'] ?? '', FILTER_VALIDATE_INT);
 
         $video = null;
 
@@ -27,6 +29,6 @@ class FormularioControlador implements RequestHandlerInterface
             $video = $this->respositorioVideos->buscarPorId($id);
         }
 
-        return new Response(200, [], $this->renderTemplate('formulario-html', ['video' => $video]));
+        return new Response(200, [], $this->template->render('formulario-html', ['video' => $video]));
     }
 }

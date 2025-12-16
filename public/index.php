@@ -2,29 +2,15 @@
 
 declare(strict_types=1);
 
-use Aluraplay\Mvc\Controller\Controller;
-use Aluraplay\Mvc\Controller\EditaVideoControlador;
-use Aluraplay\Mvc\Controller\LoginValidacaoController;
-use Aluraplay\Mvc\Controller\NovoVideoControlador;;
-
-use Aluraplay\Mvc\Repository\RespositorioVideos;
-use Aluraplay\Mvc\Repository\RepositorioUsuario;
-use Aluraplay\Mvc\Entity\CheckUploadArquivo;
-
 require_once __DIR__ . '/../vendor/autoload.php';
 $routes = require_once __DIR__ . '/../config/routes.php';
-
-$dbPath = __DIR__ . '/../bancosqlite.sqlite';
-$pdo = new PDO("sqlite:$dbPath");
-$repositorioVideo = new RespositorioVideos($pdo);
-$repositorioUsuario = new RepositorioUsuario($pdo);
-$checkUploadArquivo = new CheckUploadArquivo();
+$container = require_once __DIR__ . '/../config/dependencies.php';
 
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
-
 $key = "$requestMethod|$pathInfo";
 $isLoginRoute = $pathInfo === '/login';
+
 session_set_cookie_params([
     'secure' => true,
     'httponly' => true,
@@ -45,14 +31,7 @@ if (!array_key_exists("logado", $_SESSION) && !$isLoginRoute) {
 
 if (array_key_exists($key, $routes)) {
     $controllerClass = $routes["$requestMethod|$pathInfo"];
-
-    if ($controllerClass === LoginValidacaoController::class) {
-        $controller = new $controllerClass($repositorioUsuario);
-    } else if ($controllerClass === EditaVideoControlador::class || $controllerClass === NovoVideoControlador::class) {
-        $controller = new $controllerClass($repositorioVideo, $checkUploadArquivo);
-    } else {
-        $controller = new $controllerClass($repositorioVideo);
-    }
+    $controller = $container->get($controllerClass);
 } else {
     http_response_code(404);
     exit();

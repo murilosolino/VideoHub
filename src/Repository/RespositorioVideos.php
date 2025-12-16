@@ -6,7 +6,6 @@ namespace Aluraplay\Mvc\Repository;
 
 use Aluraplay\Mvc\Entity\Video;
 use Aluraplay\Mvc\Repository\Interface\InterfaceRepositorio;
-use Exception;
 use PDO;
 
 class RespositorioVideos implements InterfaceRepositorio
