@@ -27,6 +27,6 @@ class VideosJsonController implements Controller
                 "file_path" => $video->getFilePath()
             ];
         }, $this->respositorioVideos->buscarTodos());
-        return new Response(200, ['Content-Type: application/json'], json_encode($listaVideos));
+        return new Response(200, ['Content-Type: application/json'], json_encode($listaVideos, JSON_PRETTY_PRINT));
     }
 }
