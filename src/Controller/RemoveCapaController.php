@@ -9,13 +9,14 @@ use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RemoveCapaController implements Controller
+class RemoveCapaController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(private RespositorioVideos $respositorio) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParam =  $request->getQueryParams();
         $id = filter_var($queryParam['id'], FILTER_VALIDATE_INT);

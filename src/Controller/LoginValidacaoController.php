@@ -10,15 +10,16 @@ use Aluraplay\Mvc\Repository\RepositorioUsuario;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class LoginValidacaoController implements Controller
+class LoginValidacaoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
         private RepositorioUsuario $repositorioUsuario,
     ) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $email = filter_var($parsedBody['email'], FILTER_VALIDATE_EMAIL);

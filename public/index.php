@@ -69,7 +69,7 @@ $creator = new \Nyholm\Psr7Server\ServerRequestCreator(
 
 $serverRequest = $creator->fromGlobals();
 
-$response = $controller->processaRequisicao($serverRequest);
+$response = $controller->handle($serverRequest);
 
 http_response_code($response->getStatusCode());
 foreach ($response->getHeaders() as $name => $values) {

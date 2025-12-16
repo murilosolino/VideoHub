@@ -10,14 +10,15 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ListaVideosControlador implements Controller
+class ListaVideosControlador implements RequestHandlerInterface
 {
 
     use RenderHtmlTrait;
     public function __construct(private RespositorioVideos $respositorioVideos) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
 
         $listaVideos = $this->respositorioVideos->buscarTodos();

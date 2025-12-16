@@ -9,13 +9,14 @@ use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class FormularioControlador implements Controller
+class FormularioControlador implements RequestHandlerInterface
 {
     use RenderHtmlTrait;
     public function __construct(private RespositorioVideos $respositorioVideos) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $params = $request->getQueryParams();
         $id = filter_var($params['id'], FILTER_VALIDATE_INT);

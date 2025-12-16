@@ -11,8 +11,9 @@ use Aluraplay\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class NovoVideoControlador implements Controller
+class NovoVideoControlador implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
@@ -20,7 +21,7 @@ class NovoVideoControlador implements Controller
         private CheckUploadArquivo $checkUploadArquivo,
     ) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
 
         $parsedBody =  $request->getParsedBody();

@@ -12,8 +12,9 @@ use Exception;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class EditaVideoControlador implements Controller
+class EditaVideoControlador implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
@@ -21,7 +22,7 @@ class EditaVideoControlador implements Controller
         private CheckUploadArquivo $checkUploadArquivo,
     ) {}
 
-    public function processaRequisicao(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         $params = $request->getQueryParams();
