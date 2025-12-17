@@ -11,7 +11,13 @@ $senha = 321;
 
 $senha = password_hash((string) $senha, PASSWORD_ARGON2ID);
 
-$stmt = $pdo->prepare('INSERT INTO usuarios (email, password) VALUES (?,?)');
-$stmt->bindValue(1, $email);
-$stmt->bindValue(2, $senha);
-$stmt->execute();
+// $stmt = $pdo->exec('DROP TABLE videos');
+
+$pdo->exec("CREATE TABLE videos(
+    id INTEGER PRIMARY KEY,
+    url TEXT,
+    title TEXT,
+    path_documents TEXT,
+    user_id_fk INTEGER,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id_fk) REFERENCES usuarios(id)
+)");

@@ -1,9 +1,9 @@
-<?php $this->layout('layout-login'); ?>
+<?php $this->layout('layout-criar-conta'); ?>
 
 <main class="container">
 
     <form class="container__formulario" method="post">
-        <h2 class="formulario__titulo">Efetue login</h3>
+        <h2 class="formulario__titulo">Crie sua conta!</h3>
             <div class="formulario__campo">
                 <label class="campo__etiqueta" for="usuario">E-mail</label>
                 <input name="email" class="campo__escrita" required
@@ -17,7 +17,7 @@
                     id='senha' />
             </div>
 
-            <input class="formulario__botao" type="submit" value="Entrar" />
+            <input class="formulario__botao" type="submit" value="Criar Conta" />
     </form>
 
 </main>

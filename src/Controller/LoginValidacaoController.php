@@ -30,7 +30,7 @@ class LoginValidacaoController implements RequestHandlerInterface
             return new Response(302, ['Location' => '/login']);
         }
         $usuario = new Usuario($email, $senha);
-        $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario);
+        $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario->email);
 
         if (is_null($usuarioBanco)) {
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
@@ -44,6 +44,7 @@ class LoginValidacaoController implements RequestHandlerInterface
                 $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
             }
             $_SESSION['logado'] = true;
+            $_SESSION['id_usuario_sessao'] = $usuarioBanco->id;
             return new Response(302, ['Location' => '/']);
         } else {
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');

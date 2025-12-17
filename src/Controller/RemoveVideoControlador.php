@@ -23,6 +23,13 @@ class RemoveVideoControlador implements RequestHandlerInterface
         $queryParam =  $request->getQueryParams();
         $id = filter_var($queryParam['id'], FILTER_VALIDATE_INT);
 
+        $videosDoUsuario = $this->respositorioVideos->buscarIdVideoDoUsuario();
+
+        if (!in_array($id, $videosDoUsuario)) {
+            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir o vídeo");
+            return new Response(302, ['Location' => '/']);
+        }
+
         if ($id === false || $id === null || $id < 1) {
             $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir");
             return new Response(302, ['Location' => '/']);

@@ -11,4 +11,9 @@ trait FlashMessageTrait
     {
         $_SESSION['error_message'] = $message;
     }
+
+    private function addFlashSuccessMessage(string $message): void
+    {
+        $_SESSION['success_message'] = $message;
+    }
 }

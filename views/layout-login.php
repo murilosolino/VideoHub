@@ -16,20 +16,14 @@
 </head>
 
 <body>
-
     <header>
-
         <nav class="cabecalho">
             <a class="logo" href="./"></a>
-
             <div class="cabecalho__icones">
-                <a href="/novo-video" class="cabecalho__videos"></a>
-                <a href="/logout" class="cabecalho__sair">Sair</a>
+                <a href="/criar-conta" class="cabecalho__criar-conta">Criar conta</a>
             </div>
         </nav>
-
     </header>
-
     <?php if (isset($_SESSION['error_message'])): ?>
         <h2 class="formulario_titulo erro"> <?= htmlspecialchars($_SESSION['error_message'], ENT_QUOTES, 'UTF-8') ?></h2>
         <?php unset($_SESSION['error_message']) ?>

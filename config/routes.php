@@ -13,10 +13,13 @@ use VideoHub\Mvc\Controller\NovoVideoControlador;
 use VideoHub\Mvc\Controller\RemoveCapaController;
 use VideoHub\Mvc\Controller\RemoveVideoControlador;
 use VideoHub\Mvc\Controller\Api\VideosJsonController;
+use VideoHub\Mvc\Controller\CriarContaController;
+use VideoHub\Mvc\Controller\FormularioCriarContaController;
+use VideoHub\Mvc\Controller\FormularioNovoVideoController;
 
 return [
     'GET|/' => ListaVideosControlador::class,
-    'GET|/novo-video' => FormularioControlador::class,
+    'GET|/novo-video' => FormularioNovoVideoController::class,
     'POST|/novo-video' => NovoVideoControlador::class,
     'GET|/editar-video' => FormularioControlador::class,
     'POST|/editar-video' => EditaVideoControlador::class,
@@ -26,5 +29,7 @@ return [
     'GET|/logout' => LogoutController::class,
     'GET|/remover-capa' => RemoveCapaController::class,
     'GET|/videos-json' => VideosJsonController::class,
-    'POST|/videos-json' => NovoVideoJsonController::class
+    'POST|/videos-json' => NovoVideoJsonController::class,
+    'GET|/criar-conta' => FormularioCriarContaController::class,
+    'POST|/criar-conta' => CriarContaController::class
 ];

@@ -13,12 +13,12 @@ class RepositorioUsuario
 {
     public function __construct(private PDO $pdo) {}
 
-    public function buscarPorEmail(Usuario $usuario): ?Usuario
+    public function buscarPorEmail(string $email): ?Usuario
     {
 
         $sql = "SELECT * FROM usuarios WHERE email = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(1, $usuario->email);
+        $stmt->bindValue(1, $email);
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -35,6 +35,16 @@ class RepositorioUsuario
         $stmt = $this->pdo->prepare("UPDATE usuario SET password = ? WHERE id = ?");
         $stmt->bindValue(1, $senha);
         $stmt->bindValue(2, $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function criarUsuario(string $email, string $senha): void
+    {
+        $senha = password_hash((string) $senha, PASSWORD_ARGON2ID);
+
+        $stmt = $this->pdo->prepare('INSERT INTO usuarios (email, password) VALUES (?,?)');
+        $stmt->bindValue(1, $email);
+        $stmt->bindValue(2, $senha);
         $stmt->execute();
     }
 

@@ -66,12 +66,42 @@ body>header {
     padding: 15px;
 }
 
-.cabecalho__sair {
-    margin: 0 20px;
-    padding: 5px 10px;
-    border-radius: 10%;
+.cabecalho__sair,
+.cabecalho__criar-conta {
+    margin: 0 12px;
+    padding: 8px 14px;
+    border-radius: 8px;
     background-color: var(--roxo-escuro);
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(90, 16, 128, 0.12);
+    transition: background-color 160ms ease, transform 80ms ease, box-shadow 160ms ease;
+    -webkit-font-smoothing: antialiased;
+}
 
+.cabecalho__sair:hover,
+.cabecalho__criar-conta:hover {
+    background-color: var(--roxo-medio);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(90, 16, 128, 0.16);
+}
+
+.cabecalho__sair:active,
+.cabecalho__criar-conta:active {
+    transform: translateY(0);
+}
+
+.cabecalho__sair:focus,
+.cabecalho__criar-conta:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
 /* ESTILOS DA SEÇÃO VÍDEOS */
@@ -164,4 +194,32 @@ body>header {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Estilo para mensagens de sucesso (harmoniza com o roxo, mas indica sucesso) */
+.formulario_titulo.success {
+    color: #fff;
+    background: linear-gradient(90deg, #2ab673 0%, #6fd78e 100%);
+    border-radius: 8px;
+    padding: 12px 20px 12px 48px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(43, 166, 106, 0.12);
+    position: relative;
+    display: inline-block;
+    border-left: 6px solid #2ab673;
+    animation: erroFadeIn 0.5s;
+}
+
+.formulario_titulo.success::before {
+    content: '\2714';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    color: #fffbe6;
+    opacity: 0.95;
 }

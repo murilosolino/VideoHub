@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FormularioControlador implements RequestHandlerInterface
+class FormularioNovoVideoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
@@ -24,13 +24,6 @@ class FormularioControlador implements RequestHandlerInterface
     {
         $params = $request->getQueryParams();
         $id = filter_var($params['id'] ?? '', FILTER_VALIDATE_INT);
-
-        $videosDoUsuario = $this->respositorioVideos->buscarIdVideoDoUsuario();
-
-        if (!in_array($id, $videosDoUsuario)) {
-            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de manipular o vídeo");
-            return new Response(302, ['Location' => '/']);
-        }
 
         $video = null;
 

@@ -10,6 +10,7 @@ $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $key = "$requestMethod|$pathInfo";
 $isLoginRoute = $pathInfo === '/login';
+$createAccountRout = $pathInfo === '/criar-conta';
 
 session_set_cookie_params([
     'secure' => true,
@@ -24,7 +25,7 @@ if (isset($_SESSION['logado'])) {
     $_SESSION['logado'] = $originalInfo;
 }
 
-if (!array_key_exists("logado", $_SESSION) && !$isLoginRoute) {
+if (!array_key_exists("logado", $_SESSION) && !$isLoginRoute && !$createAccountRout) {
     header("Location: /login");
     return;
 }

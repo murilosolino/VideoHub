@@ -1,6 +1,11 @@
 <?php $this->layout('layout'); ?>
 
 <ul class="videos__container" alt="videos alura">
+    <?php if (empty($listaVideos)):  ?>
+        <div class="sem-videos">
+            <h2> Ainda não há vídeos por aqui, comece a listar vídeos para que eles aparecem nesta página.</h2>
+        </div>
+    <?php endif; ?>
     <?php foreach ($listaVideos as $video): ?>
         <?php if (filter_var($video->url, FILTER_VALIDATE_URL)): ?>
             <li class="videos__item">
