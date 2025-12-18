@@ -58,8 +58,8 @@ Sistema de roteamento baseado em array associativo (`método|path => Controller`
 ### 1. Clone e instale as dependências
 
 ```bash
-git clone https://github.com/seu-usuario/aluraplay.git
-cd aluraplay
+git clone https://github.com/seu-usuario/VideoHub.git
+cd VideoHub
 composer install
 ```
 
