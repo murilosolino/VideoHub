@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace VideoHub\Mvc\Controller\Api;
 
-use VideoHub\Mvc\Controller\Controller;
-use VideoHub\Mvc\Entity\Video;
-use VideoHub\Mvc\Repository\RespositorioVideos;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,10 +20,26 @@ class NovoVideoJsonController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
 
-        $content = $request->getBody()->getContents();
-        $content = file_get_contents("php://input");
-        $arrayVideo = json_decode($content, true);
-        $this->videoService->novoVideo($arrayVideo['url'], $arrayVideo['titulo']);
-        return new Response(201);
+        $parsed = $request->getParsedBody();
+        if ($parsed === null) {
+            $body = $request->getBody();
+            $body->rewind();
+            $parsed = json_decode($body->getContents(), true) ?? [];
+        }
+
+        $url = filter_var($parsed['url'] ?? '', FILTER_VALIDATE_URL);
+        $titulo = trim((string)($parsed['titulo'] ?? ''));
+
+        if ($url === false || $titulo === '') {
+            return new Response(
+                400,
+                ['Content-Type' => 'application/json'],
+                json_encode(['error' => 'Dados inválidos: url ou titulo ausente'])
+            );
+        }
+
+        $this->videoService->novoVideo($url, $titulo);
+
+        return new Response(201, ['Content-Type' => 'application/json'], json_encode(['status' => 'created']));
     }
 }

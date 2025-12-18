@@ -17,25 +17,35 @@ class JwtAuthenticationMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        try {
+            $auth = $request->getHeader('Authorization');
 
-        $auth = $request->getHeader('Authorization');
+            if (empty($auth)) {
+                return new Response(
+                    401,
+                    ['Content-type: application:json'],
+                    json_encode(['error' => 'Token de autorizacao nao informado'])
+                );
+            }
 
-        if (empty($auth)) {
+            $token = $auth[0];
+            $jwtToken = preg_replace('/^Bearer\s+/i', '', $token);
+            $jwtKey = $_ENV['JWT_KEY'] ?? '';
+            if (!$_ENV['JWT_KEY']) {
+                return new Response(500, [], null);
+            }
+
+            JWT::decode($jwtToken, new Key($jwtKey, 'HS256'));
+
+            $response = $handler->handle($request);
+
+            return $response;
+        } catch (\Throwable $th) {
             return new Response(
-                400,
-                ['Content-type: application:json'],
-                json_encode(['error' => 'Token de autorizacao nao informado'])
+                401,
+                ['Content-Type: application/json'],
+                json_encode(['error' => 'Token de acesso invalido'])
             );
         }
-
-        $token = $auth[0];
-        $jwtToken = str_replace('Bearer ', '', $token);
-        $jwtKey = $_ENV['JWT_KEY'];
-
-        JWT::decode($jwtToken, new Key($jwtKey, 'HS256'));
-
-        $response = $handler->handle($request);
-
-        return $response;
     }
 }

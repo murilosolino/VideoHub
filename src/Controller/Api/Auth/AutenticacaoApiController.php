@@ -15,9 +15,13 @@ class AutenticacaoApiController implements RequestHandlerInterface
     public function __construct(private UserService $userService) {}
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $content = $request->getBody()->getContents();
-        $content = file_get_contents("php://input");
-        $parsedBody = json_decode($content, true);
+        $parsedBody = $request->getParsedBody();
+        if ($parsedBody === null) {
+            $body = $request->getBody();
+            $body->rewind();
+            $content = $body->getContents();
+            $parsedBody = json_decode($content, true) ?? [];
+        }
         $email = filter_var($parsedBody['email'] ?? '', FILTER_VALIDATE_EMAIL);
         $senha = filter_var($parsedBody['senha'] ?? '');
 

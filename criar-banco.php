@@ -5,6 +5,8 @@ declare(strict_types=1);
 $dbPath = __DIR__ . '/bancosqlite.sqlite';
 $pdo = new PDO("sqlite:$dbPath");
 
+$pdo->exec('PRAGMA foreign_keys = ON;');
+
 $pdo->exec("CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
