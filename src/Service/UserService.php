@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VideoHub\Mvc\Service;
 
+use Firebase\JWT\JWT;
 use VideoHub\Mvc\Entity\Usuario;
 use VideoHub\Mvc\Helper\FlashMessageTrait;
 use VideoHub\Mvc\Repository\RepositorioUsuario;
@@ -65,5 +66,20 @@ class UserService
         }
 
         return false;
+    }
+
+    public function generateJWTToken(string $email): string
+    {
+
+        $key = $_ENV['JWT_KEY'];
+        $payload = [
+            'iss' => 'VideoHub',
+            'sub' => 'video-huB-api',
+            'exp' => time() + 3600,
+            'user_email' => $email,
+        ];
+
+        $jwt = 'Bearer ' . JWT::encode($payload, $key, 'HS256');
+        return $jwt;
     }
 }

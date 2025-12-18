@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use League\Plates\Engine;
+use VideoHub\Mvc\Middleware\JwtAuthenticationMiddleware;
 
 $builder = new ContainerBuilder();
 $builder->addDefinitions(
@@ -19,4 +20,7 @@ $builder->addDefinitions(
 );
 
 $container = $builder->build();
+$container->set(JwtAuthenticationMiddleware::class, function (): JwtAuthenticationMiddleware {
+    return new JwtAuthenticationMiddleware();
+});
 return $container;

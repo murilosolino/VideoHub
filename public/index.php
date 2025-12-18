@@ -2,15 +2,22 @@
 
 declare(strict_types=1);
 
+use Dotenv\Dotenv;
+use VideoHub\Mvc\Middleware\JwtAuthenticationMiddleware;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 $routes = require_once __DIR__ . '/../config/routes.php';
 $container = require_once __DIR__ . '/../config/dependencies.php';
 
+$env = Dotenv::createImmutable(__DIR__ . '/..');
+$env->load();
+
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $key = "$requestMethod|$pathInfo";
-$isLoginRoute = $pathInfo === '/login';
-$createAccountRout = $pathInfo === '/criar-conta';
+$publicRoutes = ['/login', '/criar-conta', '/auth'];
+$isPublicRoute = in_array($pathInfo, $publicRoutes);
+$isApiRoute = strpos($pathInfo, '/api');
 
 session_set_cookie_params([
     'secure' => true,
@@ -25,7 +32,7 @@ if (isset($_SESSION['logado'])) {
     $_SESSION['logado'] = $originalInfo;
 }
 
-if (!array_key_exists("logado", $_SESSION) && !$isLoginRoute && !$createAccountRout) {
+if (!array_key_exists("logado", $_SESSION) && !$isPublicRoute) {
     header("Location: /login");
     return;
 }
@@ -33,6 +40,7 @@ if (!array_key_exists("logado", $_SESSION) && !$isLoginRoute && !$createAccountR
 if (array_key_exists($key, $routes)) {
     $controllerClass = $routes["$requestMethod|$pathInfo"];
     $controller = $container->get($controllerClass);
+    $middleware = $container->get(JwtAuthenticationMiddleware::class);
 } else {
     http_response_code(404);
     exit();
@@ -49,7 +57,12 @@ $creator = new \Nyholm\Psr7Server\ServerRequestCreator(
 
 $serverRequest = $creator->fromGlobals();
 
-$response = $controller->handle($serverRequest);
+if (!$isPublicRoute && $isApiRoute === 0) {
+    $response = $middleware->process($serverRequest, $controller);
+} else {
+    $response = $controller->handle($serverRequest);
+}
+
 
 http_response_code($response->getStatusCode());
 foreach ($response->getHeaders() as $name => $values) {

@@ -4,3 +4,4 @@
 !/public/img/uploads/.gitkeep
 .github
 criar-usuario.php
+.env
