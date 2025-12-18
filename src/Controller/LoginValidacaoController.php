@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace VideoHub\Mvc\Controller;
 
-use VideoHub\Mvc\Entity\Usuario;
 use VideoHub\Mvc\Helper\FlashMessageTrait;
-use VideoHub\Mvc\Repository\RepositorioUsuario;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

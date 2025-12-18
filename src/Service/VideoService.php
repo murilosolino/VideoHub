@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VideoHub\Mvc\Service;
 
-use League\Plates\Engine;
 use VideoHub\Mvc\Entity\CheckUploadArquivo;
 use VideoHub\Mvc\Entity\Video;
 use VideoHub\Mvc\Helper\FlashMessageTrait;

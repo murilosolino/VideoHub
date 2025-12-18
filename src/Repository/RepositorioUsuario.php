@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace VideoHub\Mvc\Repository;
 
 use VideoHub\Mvc\Entity\Usuario;
-use VideoHub\Mvc\Repository\Interface\InterfaceRepositorio;
-use InvalidArgumentException;
 use PDO;
 
 class RepositorioUsuario
