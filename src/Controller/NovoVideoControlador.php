@@ -12,13 +12,13 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VideoHub\Mvc\Service\VideoService;
 
 class NovoVideoControlador implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
-        private RespositorioVideos $respositorioVideos,
-        private CheckUploadArquivo $checkUploadArquivo,
+        private VideoService $videoService
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -36,19 +36,8 @@ class NovoVideoControlador implements RequestHandlerInterface
             return new Response(302, ['Location' => '/novo-video']);
         }
 
-        $video = new Video($url, $titulo);
-        $uploadPathPublic = $this->checkUploadArquivo->moveUploadFile('image');
+        $result = $this->videoService->novoVideo($url, $titulo);
 
-        if (!is_null($uploadPathPublic)) {
-            $video->setFilePath($uploadPathPublic);
-        }
-
-        $result = $this->respositorioVideos->inserir($video);
-
-        if (!$result) {
-            $this->addFlashErrorMessage('Ocorreu um erro ao salvar o vídeo. Tente novamente mais tarde');
-            return new Response(302, ['Location' => '/novo-video']);
-        }
-        return new Response(302, ['Location' => '/']);
+        return $result ?  new Response(302, ['Location' => '/']) :  new Response(302, ['Location' => '/novo-video']);
     }
 }

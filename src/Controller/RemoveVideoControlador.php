@@ -10,43 +10,26 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VideoHub\Mvc\Service\VideoService;
 
 class RemoveVideoControlador implements RequestHandlerInterface
 {
     use FlashMessageTrait;
 
-    public function __construct(private RespositorioVideos $respositorioVideos) {}
+    public function __construct(private VideoService $videoService) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
 
         $queryParam =  $request->getQueryParams();
-        $id = filter_var($queryParam['id'], FILTER_VALIDATE_INT);
-
-        $videosDoUsuario = $this->respositorioVideos->buscarIdVideoDoUsuario();
-
-        if (!in_array($id, $videosDoUsuario)) {
-            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir o vídeo");
-            return new Response(302, ['Location' => '/']);
-        }
+        $id = filter_var($queryParam['id'] ?? '', FILTER_VALIDATE_INT);
 
         if ($id === false || $id === null || $id < 1) {
             $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir");
             return new Response(302, ['Location' => '/']);
         }
 
-        $video = $this->respositorioVideos->buscarPorId($id);
-
-        if (is_null($video)) {
-            $this->addFlashErrorMessage("Id de vídeo inválido, impossível de excluir");
-            return new Response(302, ['Location' => '/']);
-        }
-
-        $result = $this->respositorioVideos->remover($video->id);
-
-        if (!$result) {
-            $this->addFlashErrorMessage("Ocorreu um erro durante a exclusão do registro no banco de dados");
-        }
+        $this->videoService->excluirVideo($id);
 
         return new Response(302, ['Location' => '/']);
     }

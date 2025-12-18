@@ -11,12 +11,13 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VideoHub\Mvc\Service\UserService;
 
 class LoginValidacaoController implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
-        private RepositorioUsuario $repositorioUsuario,
+        private UserService $userService,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -29,26 +30,9 @@ class LoginValidacaoController implements RequestHandlerInterface
             $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
             return new Response(302, ['Location' => '/login']);
         }
-        $usuario = new Usuario($email, $senha);
-        $usuarioBanco = $this->repositorioUsuario->buscarPorEmail($usuario->email);
 
-        if (is_null($usuarioBanco)) {
-            $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
-            return new Response(302, ['Location' => '/login']);
-        }
+        $result = $this->userService->validaLogin($email, $senha);
 
-        if ($usuario->validaLogin($usuarioBanco)) {
-
-            if (password_needs_rehash($usuarioBanco->password, PASSWORD_ARGON2ID)) {
-                $novoHash = password_hash($senha, PASSWORD_ARGON2ID);
-                $this->repositorioUsuario->atualizaSenha($novoHash, $usuarioBanco->id);
-            }
-            $_SESSION['logado'] = true;
-            $_SESSION['id_usuario_sessao'] = $usuarioBanco->id;
-            return new Response(302, ['Location' => '/']);
-        } else {
-            $this->addFlashErrorMessage('E-mail ou senha inválidos. Verifique suas credenciais');
-            return new Response(302, ['Location' => '/login']);
-        }
+        return $result ? new Response(302, ['Location' => '/']) : new Response(302, ['Location' => '/login']);
     }
 }

@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use VideoHub\Mvc\Controller\Api\NovoVideoJsonController;
 use VideoHub\Mvc\Controller\EditaVideoControlador;
-use VideoHub\Mvc\Controller\FormularioControlador;
 use VideoHub\Mvc\Controller\ListaVideosControlador;
 use VideoHub\Mvc\Controller\LoginFormController;
 use VideoHub\Mvc\Controller\LoginValidacaoController;
@@ -15,13 +13,14 @@ use VideoHub\Mvc\Controller\RemoveVideoControlador;
 use VideoHub\Mvc\Controller\Api\VideosJsonController;
 use VideoHub\Mvc\Controller\CriarContaController;
 use VideoHub\Mvc\Controller\FormularioCriarContaController;
+use VideoHub\Mvc\Controller\FormularioEditaVideoControlador;
 use VideoHub\Mvc\Controller\FormularioNovoVideoController;
 
 return [
     'GET|/' => ListaVideosControlador::class,
     'GET|/novo-video' => FormularioNovoVideoController::class,
     'POST|/novo-video' => NovoVideoControlador::class,
-    'GET|/editar-video' => FormularioControlador::class,
+    'GET|/editar-video' => FormularioEditaVideoControlador::class,
     'POST|/editar-video' => EditaVideoControlador::class,
     'GET|/remover-video' => RemoveVideoControlador::class,
     'GET|/login' => LoginFormController::class,
@@ -29,7 +28,6 @@ return [
     'GET|/logout' => LogoutController::class,
     'GET|/remover-capa' => RemoveCapaController::class,
     'GET|/videos-json' => VideosJsonController::class,
-    'POST|/videos-json' => NovoVideoJsonController::class,
     'GET|/criar-conta' => FormularioCriarContaController::class,
     'POST|/criar-conta' => CriarContaController::class
 ];

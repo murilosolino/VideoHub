@@ -11,12 +11,13 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VideoHub\Mvc\Service\VideoService;
 
-class FormularioControlador implements RequestHandlerInterface
+class FormularioEditaVideoControlador implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     public function __construct(
-        private RespositorioVideos $respositorioVideos,
+        private VideoService $videoService,
         private Engine $template,
     ) {}
 
@@ -25,19 +26,13 @@ class FormularioControlador implements RequestHandlerInterface
         $params = $request->getQueryParams();
         $id = filter_var($params['id'] ?? '', FILTER_VALIDATE_INT);
 
-        $videosDoUsuario = $this->respositorioVideos->buscarIdVideoDoUsuario();
-
-        if (!in_array($id, $videosDoUsuario)) {
+        if ($id === false || $id === null) {
             $this->addFlashErrorMessage("Id de vídeo inválido, impossível de manipular o vídeo");
             return new Response(302, ['Location' => '/']);
         }
 
-        $video = null;
+        $video = $this->videoService->capturaVideoPorId($id);
 
-        if ($id !== false && $id !== null) {
-            $video = $this->respositorioVideos->buscarPorId($id);
-        }
-
-        return new Response(200, [], $this->template->render('formulario-html', ['video' => $video]));
+        return is_null($video) ?  new Response(302, ['Location' => '/']) : new Response(200, [], $this->template->render('formulario-html', ['video' => $video]));
     }
 }

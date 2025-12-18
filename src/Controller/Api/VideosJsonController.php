@@ -10,12 +10,13 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VideoHub\Mvc\Service\VideoService;
 
 class VideosJsonController implements RequestHandlerInterface
 {
 
     public function __construct(
-        private RespositorioVideos $respositorioVideos
+        private VideoService $videoService
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -26,7 +27,7 @@ class VideosJsonController implements RequestHandlerInterface
                 "url" => $video->url,
                 "file_path" => $video->getFilePath()
             ];
-        }, $this->respositorioVideos->buscarTodos());
+        }, $this->videoService->listarVideos());
         return new Response(200, ['Content-Type: application/json'], json_encode($listaVideos, JSON_PRETTY_PRINT));
     }
 }
